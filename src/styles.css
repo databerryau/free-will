@@ -1,0 +1,615 @@
+/* Quiet editorial: serif text on warm paper, one muted accent, little motion. */
+
+:root {
+  --bg: #f6f1e8;
+  --surface: #fbf8f2;
+  --text: #2a2622;
+  --muted: #6b6258;
+  --faint: #ddd4c6;
+  --accent: #8c4a2f;
+  --accent-soft: #efe1d3;
+  --on-accent: #fbf8f2;
+
+  --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1d1b18;
+    --surface: #262320;
+    --text: #e9e3d8;
+    --muted: #a69d90;
+    --faint: #3b3631;
+    --accent: #d99470;
+    --accent-soft: #3a2b23;
+    --on-accent: #1d1b18;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 48rem) {
+  body {
+    font-size: 1.1875rem;
+  }
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- Page frame ---------- */
+
+.page {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+.site-header {
+  padding: 1.25rem 0 1.5rem;
+}
+
+.wordmark {
+  font-style: italic;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.site-footer {
+  margin-top: 4rem;
+  padding: 1.5rem 0 2.5rem;
+  border-top: 1px solid var(--faint);
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.site-footer p {
+  margin: 0 0 0.5rem;
+}
+
+/* ---------- Type ---------- */
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: 600;
+  margin: 0.25rem 0 1.5rem;
+  letter-spacing: -0.01em;
+}
+
+h2 {
+  font-size: 1.25rem;
+  line-height: 1.3;
+  font-weight: 600;
+  margin: 2.5rem 0 0.75rem;
+}
+
+h3 {
+  font-size: 1.125rem;
+  line-height: 1.3;
+  margin: 2rem 0 0.75rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+.eyebrow,
+.label {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0;
+}
+
+.lede {
+  font-size: 1.0625em;
+}
+
+.small-heading {
+  font-size: 1rem;
+}
+
+cite {
+  font-style: italic;
+}
+
+/* ---------- Buttons & links ---------- */
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+.button,
+.continue,
+form button[type='submit'] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.button:hover,
+.continue:hover,
+form button[type='submit']:hover:not(:disabled) {
+  opacity: 0.88;
+}
+
+form button[type='submit']:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.continue {
+  margin-top: 0.5rem;
+}
+
+.link {
+  background: none;
+  border: none;
+  padding: 0.5rem 0;
+  min-height: 2.75rem;
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--faint);
+}
+
+.link:hover {
+  color: var(--text);
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  margin: -0.75rem 0 0.25rem;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+/* ---------- Experiment steps ---------- */
+
+.experiment header {
+  margin-bottom: 1.5rem;
+}
+
+.step {
+  margin-top: 1.75rem;
+  scroll-margin-top: 20vh;
+  animation: arrive 0.7s ease-out both;
+}
+
+.experiment header + .step {
+  margin-top: 0;
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(0.375rem);
+  }
+}
+
+.prompt {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.answer {
+  font-style: italic;
+  color: var(--accent);
+  border-left: 2px solid var(--accent);
+  padding-left: 0.875rem;
+  overflow-wrap: anywhere;
+}
+
+.input-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+@media (min-width: 30rem) {
+  .input-row {
+    flex-direction: row;
+    align-items: stretch;
+  }
+}
+
+input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.625rem 0.875rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--faint);
+  border-radius: 6px;
+}
+
+input::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.choices {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.choice {
+  min-height: 2.75rem;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--faint);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.choice:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.choice:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.choice.chosen {
+  opacity: 1;
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* The slowly filling line used by timers. */
+.bar {
+  height: 2px;
+  background: var(--faint);
+  overflow: hidden;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.bar-fill {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  animation: fill linear forwards;
+}
+
+.bar-fill.full {
+  width: 100%;
+  animation: none;
+}
+
+@keyframes fill {
+  to {
+    width: 100%;
+  }
+}
+
+.urge {
+  padding-top: 0.5rem;
+}
+
+.urge-button {
+  display: block;
+  width: 8rem;
+  height: 8rem;
+  margin: 0.5rem auto 1rem;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.urge-button:active {
+  transform: scale(0.97);
+}
+
+/* "What this shows": the argument step named after the experience. */
+.name-it {
+  margin-top: 1rem;
+  padding: 1.25rem 1.25rem 0.5rem;
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+
+.name-it h2 {
+  margin: 0.25rem 0 0.75rem;
+}
+
+/* Disclosures: "But…" objections and asides. */
+.objections {
+  margin: 1.5rem 0 0.5rem;
+}
+
+.objections .label {
+  margin-bottom: 0.25rem;
+}
+
+details {
+  border-top: 1px solid var(--faint);
+}
+
+details:last-child {
+  border-bottom: 1px solid var(--faint);
+}
+
+summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  min-height: 2.75rem;
+  padding: 0.625rem 0;
+  font-style: italic;
+  cursor: pointer;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::after {
+  content: '+';
+  font-family: var(--sans);
+  font-style: normal;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+details[open] summary::after {
+  content: '–';
+}
+
+.objection-reply,
+details.aside > p {
+  font-size: 0.9375em;
+}
+
+.objection-reply {
+  padding-bottom: 0.5rem;
+}
+
+details.aside {
+  margin: 0.5rem 0 1rem;
+  border-bottom: 1px solid var(--faint);
+}
+
+.reading {
+  padding-left: 1.25rem;
+  margin: 0 0 1rem;
+}
+
+.reading li {
+  margin-bottom: 0.375rem;
+}
+
+.after {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.after .nav {
+  width: 100%;
+  margin-top: 0;
+}
+
+.bridge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.bridge p {
+  font-style: italic;
+  color: var(--muted);
+}
+
+/* ---------- Lists of experiments ---------- */
+
+.cards {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem 1.125rem;
+  background: var(--surface);
+  border: 1px solid var(--faint);
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.2s;
+}
+
+.card:hover {
+  border-color: var(--accent);
+}
+
+.card-title {
+  font-weight: 600;
+}
+
+.card-hook {
+  font-size: 0.9375em;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.card-meta {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.done-mark {
+  color: var(--accent);
+}
+
+.group-heading {
+  font-style: italic;
+  font-weight: 400;
+  margin: 2.25rem 0 0.75rem;
+}
+
+.suggested {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--faint);
+  border-radius: 10px;
+}
+
+.suggested h2 {
+  margin: 0 0 1rem;
+}
+
+.suggested .button {
+  margin-top: 1.25rem;
+}
+
+.path-list {
+  counter-reset: path;
+}
+
+.path-list li {
+  counter-increment: path;
+}
+
+.path-list .card-title::before {
+  content: counter(path) '. ';
+  color: var(--accent);
+}
+
+.all-heading {
+  margin-top: 3rem;
+}
+
+/* ---------- Noticed & close ---------- */
+
+.noticed-step h2 {
+  font-size: 1.125rem;
+  margin: 2rem 0 0.5rem;
+}
+
+.synthesis {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--faint);
+}
+
+.credit {
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  color: var(--muted);
+  margin-top: 2rem;
+}
+
+.intro .button {
+  margin-top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step {
+    animation: none;
+  }
+  .button,
+  .continue,
+  .card {
+    transition: none;
+  }
+}
