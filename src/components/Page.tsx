@@ -1,48 +1,53 @@
-import { useState, type ReactNode } from 'react'
+import { useState, type CSSProperties, type ReactNode } from 'react'
+import { ArtCanvas } from '../art/ArtCanvas'
 import { APP_TITLE, CREDIT } from '../content/copy'
-import { go } from '../lib/router'
+import { HUES } from '../content/experiments'
+import type { ArtVariant } from '../content/types'
 import { useStore } from '../lib/store'
 
-// Shared frame. `home` is the format's own root, so a tester sent one
-// format never gets a link to the others.
-export function Page({ home, children }: { home: string; children: ReactNode }) {
+type Props = {
+  // The format's own root, so a tester sent one format never sees the others.
+  home: string
+  title: string
+  lede?: string
+  art?: ArtVariant
+  hue?: string
+  children: ReactNode
+}
+
+// Frame for list pages: an animated hero, then content.
+export function Page({ home, title, lede, art = 'field', hue = HUES.gold, children }: Props) {
   const { clearAll } = useStore()
   const [cleared, setCleared] = useState(false)
 
   return (
-    <div className="page">
-      <header className="site-header">
-        <a href={home} className="wordmark">
-          {APP_TITLE}
-        </a>
+    <div className="page" style={{ '--hue': hue } as CSSProperties}>
+      <header className="hero">
+        <ArtCanvas variant={art} hue={hue} className="hero-art" />
+        <div className="hero-scrim" />
+        <div className="hero-text">
+          {title !== APP_TITLE && (
+            <a href={home} className="wordmark">
+              {APP_TITLE}
+            </a>
+          )}
+          <h1>{title}</h1>
+          {lede && <p className="lede">{lede}</p>}
+        </div>
       </header>
-      <main>{children}</main>
+      <main className="page-main">{children}</main>
       <footer className="site-footer">
         <p>{CREDIT}</p>
         <button
-          className="link quiet"
+          className="text-button"
           onClick={() => {
             clearAll()
             setCleared(true)
-            go(home)
           }}
         >
           {cleared ? 'Your answers have been cleared' : 'Clear my answers'}
         </button>
       </footer>
     </div>
-  )
-}
-
-export function Nav({ back, next, nextLabel }: { back: string; next: string; nextLabel: string }) {
-  return (
-    <nav className="nav">
-      <a href={back} className="link quiet">
-        Back
-      </a>
-      <a href={next} className="button">
-        {nextLabel}
-      </a>
-    </nav>
   )
 }

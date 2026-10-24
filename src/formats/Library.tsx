@@ -1,36 +1,38 @@
-import { LIBRARY_INTRO } from '../content/copy'
-import { EXPERIMENT_BY_ID } from '../content/experiments'
+import { ARG_STEPS, EXPERIMENT_BY_ID } from '../content/experiments'
+import { Deck } from '../components/Deck'
 import { GroupedList } from '../components/ExperimentList'
 import { Page } from '../components/Page'
-import { Prose } from '../components/Prose'
-import { Runner } from '../components/Runner'
+import { go } from '../lib/router'
+import { useStore } from '../lib/store'
 
 const HOME = '#/library'
 
 export function Library({ id }: { id?: string }) {
+  const { markDone } = useStore()
   const exp = id ? EXPERIMENT_BY_ID[id] : undefined
 
   if (exp) {
     return (
-      <Page home={HOME}>
-        <a className="back" href={HOME}>
-          ← All experiments
-        </a>
-        <Runner key={exp.id} experiment={exp}>
-          <a className="button" href={HOME}>
-            Back to all experiments
-          </a>
-        </Runner>
-      </Page>
+      <Deck
+        key={exp.id}
+        screens={exp.screens}
+        expId={exp.id}
+        art={exp.art}
+        hue={exp.hue}
+        hue2={exp.hue2}
+        claim={ARG_STEPS[exp.arg].claim}
+        eyebrow={exp.title}
+        exitHref={HOME}
+        finishLabel="Back to experiments"
+        onFinish={() => go(HOME)}
+        onBack={() => go(HOME)}
+        onComplete={() => markDone(exp.id)}
+      />
     )
   }
 
   return (
-    <Page home={HOME}>
-      <h1>Seven experiments on your own mind</h1>
-      <div className="lede">
-        <Prose paras={LIBRARY_INTRO} />
-      </div>
+    <Page home={HOME} art="think" title="Seven experiments" lede="Short experiments on your own mind. Each takes a minute or two. Start anywhere.">
       <GroupedList base={HOME} />
     </Page>
   )

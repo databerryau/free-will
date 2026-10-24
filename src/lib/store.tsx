@@ -47,8 +47,12 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const store = useMemo<Store>(
     () => ({
       ...state,
+      // Asterisks are stripped because copy uses *text* for emphasis.
       setAnswer: (exp, key, value) =>
-        setState((s) => ({ ...s, answers: { ...s.answers, [exp]: { ...s.answers[exp], [key]: value } } })),
+        setState((s) => ({
+          ...s,
+          answers: { ...s.answers, [exp]: { ...s.answers[exp], [key]: value.replace(/\*/g, '') } },
+        })),
       markDone: (exp) => setState((s) => (s.done.includes(exp) ? s : { ...s, done: [...s.done, exp] })),
       reset: (exp) =>
         setState((s) => {

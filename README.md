@@ -34,11 +34,14 @@ Pushing to `main` builds and deploys to GitHub Pages via `.github/workflows/depl
 
 ## Where things live
 
-- `src/content/experiments.ts`: the seven experiments, step by step
-- `src/content/objections.ts`: the "But…" replies
-- `src/content/copy.ts`: intros, bridges, "What you noticed", closing text
-- `src/components/Runner.tsx`: runs one experiment, revealing steps one at a time
+- `src/content/experiments.ts`: the seven experiments, screen by screen
+- `src/content/objections.ts`: the "But…" replies and the reading list
+- `src/content/copy.ts`: intro, bridges, "What you noticed", closing screens
+- `src/components/Deck.tsx`: full-screen deck of short screens (tap, swipe or arrow keys)
+- `src/art/`: the generative artwork and the thinking animation (canvas)
 - `src/formats/`: the three formats and the home page
+
+Copy rules: Sam Harris's voice, a few lines per screen. See SPEC.md §9.
 
 Typed answers are kept only in the browser (localStorage) and can be cleared from any page.
 

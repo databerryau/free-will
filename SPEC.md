@@ -217,3 +217,23 @@ Changes made while building (2026-10-24):
   sees that both horns of the dilemma lead to the same place.
 - **Reading lists are titles only, with no links,** to avoid pointing at shop pages.
 - **Vite `base` is `./`, not `/free-will/`.** With hash routing it works at any path.
+
+Redesign after the first review (2026-10-24):
+
+- **Copy rewritten in Harris's voice:** plain, direct and second person, without the
+  assistant-style tics. Paraphrase only; the one quotation is Schopenhauer.
+- **A few lines per screen.** Every experiment is now a deck of short screens (about 25 words
+  at most) that you tap, swipe or arrow-key through, with a progress bar along the top.
+  This replaces the single scrolling page from the first build.
+- **Night visual design** replaces quiet editorial: deep ink background, Fraunces display
+  type and a glowing hue for each experiment. There is one dark theme; the light/dark
+  switch has been dropped.
+- **Generative artwork drawn in code** (`src/art/`), not Gemini images: city lights, rising
+  thoughts, ripples, roots, a backward-turning spiral, a flame and a figure-eight. It
+  animates, stays consistent and needs no image files. Still frames are used for thumbnails
+  and reduced motion.
+- **Thinking animation:** a breathing orb that gives off thoughts. It plays whenever the
+  user is asked to think, with a slowly filling line when the step is timed.
+- **"But…" replies open in a bottom sheet**, so the main screens stay short.
+- **Rewind's "other answer" aside is gone.** The closing screen and the "could have done
+  otherwise" reply now cover both answers.

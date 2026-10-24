@@ -1,32 +1,19 @@
-/* Quiet editorial: serif text on warm paper, one muted accent, little motion. */
+/* Night: lights arising in the dark. Each experiment tints the stage with its own --hue. */
 
 :root {
-  --bg: #f6f1e8;
-  --surface: #fbf8f2;
-  --text: #2a2622;
-  --muted: #6b6258;
-  --faint: #ddd4c6;
-  --accent: #8c4a2f;
-  --accent-soft: #efe1d3;
-  --on-accent: #fbf8f2;
+  --ink: #0a0c18;
+  --ink-2: #13162b;
+  --text: #f4efe6;
+  --soft: #d9d4e6;
+  --muted: #a29eba;
+  --faint: rgba(244, 239, 230, 0.14);
+  --glass: rgba(255, 255, 255, 0.06);
+  --hue: #f4b860;
 
-  --serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
-  --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --ui: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1d1b18;
-    --surface: #262320;
-    --text: #e9e3d8;
-    --muted: #a69d90;
-    --faint: #3b3631;
-    --accent: #d99470;
-    --accent-soft: #3a2b23;
-    --on-accent: #1d1b18;
-  }
+  color-scheme: dark;
 }
 
 *,
@@ -41,321 +28,386 @@ html {
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: var(--ink);
   color: var(--text);
-  font-family: var(--serif);
-  font-size: 1.125rem;
-  line-height: 1.6;
-  font-optical-sizing: auto;
+  font-family: var(--ui);
+  font-size: 1rem;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
 
-@media (min-width: 48rem) {
-  body {
-    font-size: 1.1875rem;
-  }
-}
-
 ::selection {
-  background: var(--accent-soft);
+  background: color-mix(in oklab, var(--hue) 40%, transparent);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--hue);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
-/* ---------- Page frame ---------- */
-
-.page {
-  max-width: 36rem;
-  margin: 0 auto;
-  padding: 0 1rem;
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
+button {
+  font: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
 
-main {
-  flex: 1;
-}
-
-.site-header {
-  padding: 1.25rem 0 1.5rem;
-}
-
-.wordmark {
+em {
   font-style: italic;
-  color: var(--muted);
-  text-decoration: none;
-  font-size: 1rem;
-}
-
-.site-footer {
-  margin-top: 4rem;
-  padding: 1.5rem 0 2.5rem;
-  border-top: 1px solid var(--faint);
-  font-family: var(--sans);
-  font-size: 0.8125rem;
-  line-height: 1.5;
-  color: var(--muted);
-}
-
-.site-footer p {
-  margin: 0 0 0.5rem;
-}
-
-/* ---------- Type ---------- */
-
-h1 {
-  font-size: 2rem;
-  line-height: 1.2;
-  font-weight: 600;
-  margin: 0.25rem 0 1.5rem;
-  letter-spacing: -0.01em;
-}
-
-h2 {
-  font-size: 1.25rem;
-  line-height: 1.3;
-  font-weight: 600;
-  margin: 2.5rem 0 0.75rem;
-}
-
-h3 {
-  font-size: 1.125rem;
-  line-height: 1.3;
-  margin: 2rem 0 0.75rem;
-}
-
-p {
-  margin: 0 0 1rem;
-}
-
-.eyebrow,
-.label {
-  font-family: var(--sans);
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 0;
-}
-
-.lede {
-  font-size: 1.0625em;
-}
-
-.small-heading {
-  font-size: 1rem;
+  color: var(--hue);
 }
 
 cite {
   font-style: italic;
 }
 
-/* ---------- Buttons & links ---------- */
-
-button {
-  font: inherit;
-  color: inherit;
+.label {
+  margin: 0 0 0.5rem;
+  font-family: var(--ui);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
-.button,
-.continue,
-form button[type='submit'] {
+/* ---------- Buttons ---------- */
+
+.pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.75rem;
-  padding: 0.625rem 1.25rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 6px;
-  background: var(--accent);
-  color: var(--on-accent);
-  font-family: var(--sans);
-  font-size: 0.9375rem;
-  font-weight: 500;
+  border-radius: 999px;
+  background: var(--hue);
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 0.95rem;
+  font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: opacity 0.2s;
+  box-shadow: 0 0 2.5rem color-mix(in oklab, var(--hue) 40%, transparent);
+  transition: transform 0.15s, box-shadow 0.3s;
 }
 
-.button:hover,
-.continue:hover,
-form button[type='submit']:hover:not(:disabled) {
-  opacity: 0.88;
+.pill:hover {
+  box-shadow: 0 0 3.5rem color-mix(in oklab, var(--hue) 60%, transparent);
 }
 
-form button[type='submit']:disabled {
-  opacity: 0.4;
+.pill:active {
+  transform: scale(0.97);
+}
+
+.round {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid var(--faint);
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--text);
+  cursor: pointer;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.round.small {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.round.next {
+  background: var(--text);
+  border-color: transparent;
+  color: var(--ink);
+}
+
+.round:disabled {
+  opacity: 0.3;
   cursor: default;
 }
 
-.continue {
-  margin-top: 0.5rem;
-}
-
-.link {
+.text-button {
   background: none;
   border: none;
-  padding: 0.5rem 0;
+  padding: 0.75rem 0;
   min-height: 2.75rem;
-  cursor: pointer;
-  font-family: var(--sans);
-  font-size: 0.875rem;
   color: var(--muted);
+  font-family: var(--ui);
+  font-size: 0.85rem;
   text-decoration: underline;
-  text-underline-offset: 0.2em;
+  text-underline-offset: 0.25em;
   text-decoration-color: var(--faint);
+  cursor: pointer;
 }
 
-.link:hover {
-  color: var(--text);
-}
+/* ---------- The stage: one short screen at a time ---------- */
 
-.back {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-  margin: -0.75rem 0 0.25rem;
-  font-family: var(--sans);
-  font-size: 0.875rem;
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.nav {
+.stage {
+  position: fixed;
+  inset: 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 2.5rem;
+  flex-direction: column;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: pan-y;
+  background:
+    radial-gradient(120% 80% at 50% 35%, color-mix(in oklab, var(--hue) 16%, var(--ink-2)) 0%, var(--ink) 70%);
 }
 
-/* ---------- Experiment steps ---------- */
-
-.experiment header {
-  margin-bottom: 1.5rem;
+.stage-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 1.2s ease;
 }
 
-.step {
-  margin-top: 1.75rem;
-  scroll-margin-top: 20vh;
-  animation: arrive 0.7s ease-out both;
+.stage-art.dim {
+  opacity: 0.25;
 }
 
-.experiment header + .step {
-  margin-top: 0;
+.think-art {
+  animation: fade-in 1.4s ease both;
 }
 
-@keyframes arrive {
+.stage-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(10, 12, 24, 0.7) 0%, rgba(10, 12, 24, 0.35) 35%, rgba(10, 12, 24, 0) 60%);
+}
+
+.stage-top,
+.stage-body,
+.stage-bottom {
+  position: relative;
+  z-index: 1;
+}
+
+/* On wide screens, keep the controls in the same column as the words. */
+.stage-top,
+.stage-bottom {
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+.stage-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: max(env(safe-area-inset-top), 0.875rem) 1rem 0;
+}
+
+.stage-meta {
+  flex: 1;
+  padding-top: 0.25rem;
+}
+
+.progress {
+  display: flex;
+  gap: 4px;
+}
+
+.progress span {
+  flex: 1;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--faint);
+  transition: background 0.4s;
+}
+
+.progress span.on {
+  background: var(--text);
+}
+
+.stage-eyebrow {
+  margin: 0.625rem 0 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.stage-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem 1.5rem 0.5rem;
+  overflow-y: auto;
+}
+
+/* Before starting, the prompt sits low like any screen. Once running, the
+   press button sits where the ripples begin (36% down, see scenes.ts). */
+.kind-urge .stage-body:has(.urge) {
+  justify-content: flex-start;
+  padding-top: max(1rem, calc(36dvh - 4.75rem - 3.5rem));
+}
+
+.screen {
+  width: 100%;
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+.enter-next {
+  animation: enter-next 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.enter-back {
+  animation: enter-back 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes enter-next {
   from {
     opacity: 0;
-    transform: translateY(0.375rem);
+    transform: translateX(1.75rem);
   }
 }
 
-.prompt {
-  display: block;
+@keyframes enter-back {
+  from {
+    opacity: 0;
+    transform: translateX(-1.75rem);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.stage-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 5rem;
+  padding: 0.75rem 1rem max(env(safe-area-inset-bottom), 1rem);
+}
+
+.hint {
+  font-size: 0.7rem;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation: fade-in 2s 1.5s ease both;
 }
 
-.answer {
-  font-style: italic;
-  color: var(--accent);
-  border-left: 2px solid var(--accent);
-  padding-left: 0.875rem;
-  overflow-wrap: anywhere;
+/* The words themselves. */
+
+.say {
+  display: block;
+  margin: 0 0 1.25rem;
+  font-family: var(--display);
+  font-size: clamp(1.7rem, 6.4vw, 2.6rem);
+  font-weight: 350;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+  text-wrap: pretty;
+  font-variation-settings: 'opsz' 96;
 }
 
-.input-row {
+.say.long {
+  font-size: clamp(1.45rem, 5.4vw, 2.1rem);
+}
+
+.kind-think .say {
+  text-align: center;
+}
+
+.kind-think .screen {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+}
+
+/* Answering. */
+
+.answer-row {
+  display: flex;
+  align-items: center;
   gap: 0.75rem;
 }
 
-@media (min-width: 30rem) {
-  .input-row {
-    flex-direction: row;
-    align-items: stretch;
-  }
+.answer-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0;
+  border: none;
+  border-bottom: 1px solid var(--faint);
+  border-radius: 0;
+  background: transparent;
+  color: var(--hue);
+  font-family: var(--display);
+  font-size: 1.6rem;
+  font-style: italic;
+  font-weight: 350;
 }
 
-input {
-  width: 100%;
-  min-height: 2.75rem;
-  padding: 0.625rem 0.875rem;
-  font: inherit;
-  color: var(--text);
-  background: var(--surface);
-  border: 1px solid var(--faint);
-  border-radius: 6px;
-}
-
-input::placeholder {
+.answer-row input::placeholder {
   color: var(--muted);
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
-input:focus {
+.answer-row input:focus {
   outline: none;
-  border-color: var(--accent);
+  border-bottom-color: var(--hue);
 }
 
-.choices {
+.options {
   display: grid;
   gap: 0.625rem;
 }
 
-.choice {
-  min-height: 2.75rem;
-  padding: 0.75rem 1rem;
+.option {
+  min-height: 3.5rem;
+  padding: 0.875rem 1.125rem;
   text-align: left;
-  background: var(--surface);
   border: 1px solid var(--faint);
-  border-radius: 6px;
+  border-radius: 1rem;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  font-family: var(--ui);
+  font-size: 1.05rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
 }
 
-.choice:hover:not(:disabled) {
-  border-color: var(--accent);
+.option:hover,
+.option.chosen {
+  border-color: var(--hue);
+  background: color-mix(in oklab, var(--hue) 16%, transparent);
 }
 
-.choice:disabled {
-  cursor: default;
-  opacity: 0.45;
-}
+/* Timers: a slowly filling line, no numbers. */
 
-.choice.chosen {
-  opacity: 1;
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-
-/* The slowly filling line used by timers. */
-.bar {
+.timer {
+  width: 100%;
+  max-width: 16rem;
   height: 2px;
+  margin: 0.5rem auto 0.25rem;
+  border-radius: 2px;
   background: var(--faint);
   overflow: hidden;
-  margin: 1.25rem 0 0.5rem;
 }
 
-.bar-fill {
+.timer i {
+  display: block;
   height: 100%;
   width: 0;
-  background: var(--accent);
+  background: var(--hue);
+  box-shadow: 0 0 12px var(--hue);
   animation: fill linear forwards;
-}
-
-.bar-fill.full {
-  width: 100%;
-  animation: none;
 }
 
 @keyframes fill {
@@ -365,251 +417,391 @@ input:focus {
 }
 
 .urge {
-  padding-top: 0.5rem;
-}
-
-.urge-button {
-  display: block;
-  width: 8rem;
-  height: 8rem;
-  margin: 0.5rem auto 1rem;
-  border-radius: 50%;
-  border: 1px solid var(--accent);
-  background: var(--accent-soft);
-  color: var(--text);
-  font-family: var(--serif);
-  font-size: 1.25rem;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.urge-button:active {
-  transform: scale(0.97);
-}
-
-/* "What this shows": the argument step named after the experience. */
-.name-it {
-  margin-top: 1rem;
-  padding: 1.25rem 1.25rem 0.5rem;
-  background: var(--surface);
-  border-left: 3px solid var(--accent);
-  border-radius: 0 8px 8px 0;
-}
-
-.name-it h2 {
-  margin: 0.25rem 0 0.75rem;
-}
-
-/* Disclosures: "But…" objections and asides. */
-.objections {
-  margin: 1.5rem 0 0.5rem;
-}
-
-.objections .label {
-  margin-bottom: 0.25rem;
-}
-
-details {
-  border-top: 1px solid var(--faint);
-}
-
-details:last-child {
-  border-bottom: 1px solid var(--faint);
-}
-
-summary {
-  list-style: none;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  min-height: 2.75rem;
-  padding: 0.625rem 0;
+  gap: 1.5rem;
+}
+
+.press {
+  width: 9.5rem;
+  height: 9.5rem;
+  border-radius: 50%;
+  border: 1px solid color-mix(in oklab, var(--hue) 70%, white);
+  background: radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--hue) 55%, white), var(--hue) 70%);
+  color: var(--ink);
+  font-family: var(--ui);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  box-shadow: 0 0 4rem color-mix(in oklab, var(--hue) 55%, transparent);
+  animation: fade-in 0.6s ease both;
+}
+
+.press:active {
+  transform: scale(0.96);
+}
+
+/* "What this shows". */
+
+.name .claim,
+.reading-screen .claim {
+  margin: 0 0 0.875rem;
+  font-family: var(--display);
+  font-size: clamp(2rem, 7.5vw, 3rem);
+  font-weight: 450;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--hue);
+  text-wrap: balance;
+}
+
+.name-text {
+  margin: 0 0 1.5rem;
+  font-family: var(--display);
+  font-size: clamp(1.2rem, 4.4vw, 1.5rem);
+  font-weight: 350;
+  line-height: 1.35;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chips .label {
+  width: 100%;
+  margin-bottom: 0.125rem;
+}
+
+.chip {
+  min-height: 2.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--faint);
+  border-radius: 999px;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  font-family: var(--display);
+  font-size: 1rem;
   font-style: italic;
   cursor: pointer;
+  transition: border-color 0.2s;
 }
 
-summary::-webkit-details-marker {
-  display: none;
+.chip:hover {
+  border-color: var(--hue);
 }
 
-summary::after {
-  content: '+';
-  font-family: var(--sans);
-  font-style: normal;
-  color: var(--muted);
-  flex-shrink: 0;
-}
-
-details[open] summary::after {
-  content: '–';
-}
-
-.objection-reply,
-details.aside > p {
-  font-size: 0.9375em;
-}
-
-.objection-reply {
-  padding-bottom: 0.5rem;
-}
-
-details.aside {
-  margin: 0.5rem 0 1rem;
-  border-bottom: 1px solid var(--faint);
-}
+/* Reading lists. */
 
 .reading {
-  padding-left: 1.25rem;
-  margin: 0 0 1rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
 }
 
 .reading li {
-  margin-bottom: 0.375rem;
-}
-
-.after {
-  margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--faint);
 }
 
-.after .nav {
-  width: 100%;
-  margin-top: 0;
+.reading cite {
+  font-family: var(--display);
+  font-size: 1.1rem;
 }
 
-.bridge {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.bridge p {
-  font-style: italic;
+.reading span {
+  font-size: 0.875rem;
   color: var(--muted);
 }
 
-/* ---------- Lists of experiments ---------- */
+.fine {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* The "But…" sheet. */
+
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(5, 6, 12, 0.6);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  animation: fade-in 0.3s ease both;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 36rem;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 1.75rem 1.5rem max(env(safe-area-inset-bottom), 1.5rem);
+  border: 1px solid var(--faint);
+  border-bottom: none;
+  border-radius: 1.5rem 1.5rem 0 0;
+  background: color-mix(in oklab, var(--hue) 8%, var(--ink-2));
+  box-shadow: 0 -1rem 4rem rgba(0, 0, 0, 0.5);
+  animation: sheet-up 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.sheet:focus {
+  outline: none;
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.sheet-title {
+  margin: 0 0 1rem;
+  font-family: var(--display);
+  font-size: 1.6rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--hue);
+}
+
+.sheet p:not(.label) {
+  margin: 0 0 1rem;
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 350;
+  line-height: 1.45;
+}
+
+.sheet .pill {
+  margin-top: 0.5rem;
+}
+
+/* ---------- List pages ---------- */
+
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.hero {
+  position: relative;
+  min-height: min(56vh, 30rem);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 20%, color-mix(in oklab, var(--hue) 14%, var(--ink-2)) 0%, var(--ink) 75%);
+}
+
+.hero-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--ink) 0%, rgba(10, 12, 24, 0) 60%);
+}
+
+.hero-text {
+  position: relative;
+  width: 100%;
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 3rem 1.25rem 1.5rem;
+}
+
+.wordmark {
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  font-family: var(--display);
+  font-style: italic;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.hero h1 {
+  margin: 0 0 0.75rem;
+  font-family: var(--display);
+  font-size: clamp(2.6rem, 11vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variation-settings: 'opsz' 144;
+}
+
+.lede {
+  max-width: 30rem;
+  margin: 0;
+  font-family: var(--display);
+  font-size: 1.25rem;
+  font-weight: 350;
+  line-height: 1.4;
+  color: var(--soft);
+}
+
+.page-main {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 0.5rem 1.25rem 0;
+}
+
+.group-heading,
+.all-heading {
+  margin: 2.5rem 0 1rem;
+  font-family: var(--display);
+  font-size: 1.5rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--soft);
+}
+
+.all-heading {
+  margin-top: 3.5rem;
+  font-style: normal;
+  font-size: 1.1rem;
+  font-family: var(--ui);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.all-heading + .group .group-heading {
+  margin-top: 1rem;
+}
 
 .cards {
-  list-style: none;
-  padding: 0;
-  margin: 0;
   display: grid;
   gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 44rem) {
+  .cards {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .card {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 1rem 1.125rem;
-  background: var(--surface);
+  align-items: stretch;
+  gap: 1rem;
+  height: 100%;
+  padding: 0.625rem;
   border: 1px solid var(--faint);
-  border-radius: 8px;
+  border-radius: 1.25rem;
+  background: var(--glass);
   color: var(--text);
   text-decoration: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.25s, background 0.25s, transform 0.25s;
 }
 
 .card:hover {
-  border-color: var(--accent);
+  border-color: color-mix(in oklab, var(--hue) 70%, transparent);
+  background: color-mix(in oklab, var(--hue) 8%, transparent);
+  transform: translateY(-2px);
+}
+
+.card.plain {
+  padding: 1.125rem 1.25rem;
+}
+
+.card-art {
+  width: 6rem;
+  height: 6rem;
+  flex-shrink: 0;
+  border-radius: 0.875rem;
+  background: radial-gradient(circle at 50% 40%, color-mix(in oklab, var(--hue) 22%, var(--ink-2)), var(--ink) 80%);
+}
+
+.card-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.25rem 0.25rem 0;
 }
 
 .card-title {
-  font-weight: 600;
+  font-family: var(--display);
+  font-size: 1.3rem;
+  font-weight: 450;
+  line-height: 1.15;
+}
+
+.card-number {
+  margin-right: 0.5rem;
+  color: var(--hue);
 }
 
 .card-hook {
-  font-size: 0.9375em;
-  color: var(--muted);
-  line-height: 1.45;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--soft);
 }
 
 .card-meta {
-  font-family: var(--sans);
   font-size: 0.75rem;
   color: var(--muted);
-  margin-top: 0.25rem;
 }
 
 .done-mark {
-  color: var(--accent);
-}
-
-.group-heading {
-  font-style: italic;
-  font-weight: 400;
-  margin: 2.25rem 0 0.75rem;
+  color: var(--hue);
 }
 
 .suggested {
-  margin-top: 2rem;
-  padding: 1.25rem;
-  border: 1px solid var(--faint);
-  border-radius: 10px;
+  margin-top: 1rem;
+  padding: 0 0 0.5rem;
 }
 
-.suggested h2 {
-  margin: 0 0 1rem;
+.suggested .group-heading {
+  margin-top: 1.5rem;
 }
 
-.suggested .button {
+.suggested .pill {
   margin-top: 1.25rem;
 }
 
-.path-list {
-  counter-reset: path;
-}
-
-.path-list li {
-  counter-increment: path;
-}
-
-.path-list .card-title::before {
-  content: counter(path) '. ';
-  color: var(--accent);
-}
-
-.all-heading {
-  margin-top: 3rem;
-}
-
-/* ---------- Noticed & close ---------- */
-
-.noticed-step h2 {
-  font-size: 1.125rem;
-  margin: 2rem 0 0.5rem;
-}
-
-.synthesis {
-  margin-top: 2rem;
-  padding-top: 1.5rem;
+.site-footer {
+  max-width: 44rem;
+  margin: 4rem auto 0;
+  padding: 1.5rem 1.25rem 2.5rem;
   border-top: 1px solid var(--faint);
-}
-
-.credit {
-  font-family: var(--sans);
-  font-size: 0.8125rem;
+  font-size: 0.8rem;
   color: var(--muted);
-  margin-top: 2rem;
 }
 
-.intro .button {
-  margin-top: 1rem;
+.site-footer p {
+  margin: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .step {
+  .enter-next,
+  .enter-back {
+    animation-name: fade-in;
+  }
+  .sheet {
     animation: none;
   }
-  .button,
-  .continue,
-  .card {
+  .card,
+  .pill {
     transition: none;
   }
 }

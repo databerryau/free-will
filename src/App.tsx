@@ -7,7 +7,7 @@ import { useRoute } from './lib/router'
 
 export function App() {
   const route = useRoute()
-  const [section, sub] = route
+  const [section, sub, flag] = route
   const key = route.join('/')
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export function App() {
 
   switch (section) {
     case 'walkthrough':
-      return <Walkthrough screen={Number(sub ?? 0)} />
+      return <Walkthrough chapter={Number(sub ?? 0)} atEnd={flag === 'end'} />
     case 'library':
       return <Library id={sub} />
     case 'path':
