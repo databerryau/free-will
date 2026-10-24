@@ -4,7 +4,17 @@ import type { ArtVariant } from '../content/types'
 // animated one look alike. All of them are lights in the dark: thoughts arising.
 
 export type RGB = [number, number, number]
-export type Scene = (ctx: CanvasRenderingContext2D, w: number, h: number, t: number, c: RGB, c2: RGB) => void
+// fy: where the scene's focal point sits, as a fraction of the height. The deck keeps
+// it in the lower half, below the words.
+export type Scene = (
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  t: number,
+  c: RGB,
+  c2: RGB,
+  fy: number,
+) => void
 
 const TAU = Math.PI * 2
 const WHITE: RGB = [255, 247, 235]
@@ -80,16 +90,16 @@ function motes(
   }
 }
 
-const field: Scene = (ctx, w, h, t, c) => {
-  glow(ctx, w * 0.5, h * 0.35, Math.max(w, h) * 0.6, c, 0.1)
+const field: Scene = (ctx, w, h, t, c, _c2, fy) => {
+  glow(ctx, w * 0.5, h * fy, Math.max(w, h) * 0.6, c, 0.1)
   motes(ctx, w, h, t, c, 70)
 }
 
 // The thinking animation: a slowly breathing orb that gives off thoughts.
-const think: Scene = (ctx, w, h, t, c) => {
+const think: Scene = (ctx, w, h, t, c, _c2, fy) => {
   const u = unit(w, h)
   const cx = w / 2
-  const cy = h * 0.34
+  const cy = h * fy
   const breath = 0.5 - 0.5 * Math.cos((TAU * t) / 8)
   const R = Math.min(w, h) * 0.12 * (0.85 + 0.3 * breath)
 
@@ -128,14 +138,14 @@ const think: Scene = (ctx, w, h, t, c) => {
 }
 
 // City lights at night, seen from above. One of them is brighter: the one you picked.
-const city: Scene = (ctx, w, h, t, c) => {
+const city: Scene = (ctx, w, h, t, c, _c2, fy) => {
   const u = unit(w, h)
   const clusters = 6
-  const centre = (j: number) => [0.12 + rand(j, 0, 11) * 0.76, 0.38 + rand(j, 0, 12) * 0.5]
+  const centre = (j: number) => [0.12 + rand(j, 0, 11) * 0.76, fy - 0.18 + rand(j, 0, 12) * 0.36]
   const pos = (i: number) => {
     const j = i % clusters
     const [mx, my] = centre(j)
-    if (rand(i, 0, 13) < 0.25) return [rand(i, 0, 16) * w, (0.25 + rand(i, 0, 17) * 0.75) * h]
+    if (rand(i, 0, 13) < 0.25) return [rand(i, 0, 16) * w, (0.15 + rand(i, 0, 17) * 0.85) * h]
     const ang = rand(i, 0, 14) * TAU
     const rad = Math.pow(rand(i, 0, 15), 1.8) * 0.2
     return [(mx + Math.cos(ang) * rad) * w, (my + Math.sin(ang) * rad * 0.6) * h]
@@ -167,10 +177,10 @@ const city: Scene = (ctx, w, h, t, c) => {
 }
 
 // Rings spreading from a single point: an impulse arriving.
-const ripple: Scene = (ctx, w, h, t, c) => {
+const ripple: Scene = (ctx, w, h, t, c, _c2, fy) => {
   const u = unit(w, h)
   const cx = w / 2
-  const cy = h * 0.36
+  const cy = h * fy
   const maxR = Math.hypot(w, h) * 0.6
   glow(ctx, cx, cy, maxR * 0.5, c, 0.1)
   for (let j = 0; j < 5; j++) {
@@ -190,8 +200,9 @@ const ripple: Scene = (ctx, w, h, t, c) => {
 type Seg = { x1: number; y1: number; x2: number; y2: number; d: number }
 const treeCache = new Map<string, Seg[]>()
 
-function tree(w: number, h: number): Seg[] {
-  const key = `${Math.round(w)}x${Math.round(h)}`
+// The tree hangs from (w/2, oy) and is sized to end just above the bottom edge.
+function tree(w: number, h: number, oy: number): Seg[] {
+  const key = `${Math.round(w)}x${Math.round(h)}@${Math.round(oy)}`
   const cached = treeCache.get(key)
   if (cached) return cached
   const segs: Seg[] = []
@@ -207,19 +218,20 @@ function tree(w: number, h: number): Seg[] {
       grow(x2, y2, ang + spread + (rand(n++, 0, 33) - 0.5) * 0.3, len * (0.68 + rand(n++, 0, 34) * 0.14), d + 1)
     }
   }
-  grow(w / 2, h * 0.08, Math.PI / 2, Math.min(h * 0.17, w * 0.32), 0)
+  grow(w / 2, oy, Math.PI / 2, Math.min((h * 0.96 - oy) / 3.4, w * 0.32), 0)
   treeCache.set(key, segs)
   return segs
 }
 
-const roots: Scene = (ctx, w, h, t, c) => {
+const roots: Scene = (ctx, w, h, t, c, _c2, fy) => {
   const u = unit(w, h)
+  const oy = h * Math.max(0.06, fy - 0.18)
   const cyc = (t % 18) / 18
   const depth = cyc < 0.6 ? (cyc / 0.6) * 8.5 : 8.5
   const fade = cyc < 0.85 ? 1 : 1 - (cyc - 0.85) / 0.15
-  glow(ctx, w / 2, h * 0.08, 120 * u, c, 0.1 + 0.3 * fade)
+  glow(ctx, w / 2, oy, 120 * u, c, 0.1 + 0.3 * fade)
   ctx.lineCap = 'round'
-  for (const s of tree(w, h)) {
+  for (const s of tree(w, h, oy)) {
     const p = Math.max(0, Math.min(1, depth - s.d))
     if (p <= 0) continue
     const x = s.x1 + (s.x2 - s.x1) * p
@@ -232,16 +244,16 @@ const roots: Scene = (ctx, w, h, t, c) => {
     ctx.stroke()
     if (p < 1) glow(ctx, x, y, 10 * u, mix(c, WHITE, 0.4), 0.7 * fade)
   }
-  dot(ctx, w / 2, h * 0.08, 4 * u, WHITE, 0.9)
+  dot(ctx, w / 2, oy, 4 * u, WHITE, 0.9)
   motes(ctx, w, h, t, c, 20, 0.2, 1, 0.5)
 }
 
 // A galaxy of moments turning slowly backwards.
-const spiral: Scene = (ctx, w, h, t, c) => {
+const spiral: Scene = (ctx, w, h, t, c, _c2, fy) => {
   const u = unit(w, h)
   const cx = w / 2
-  const cy = h * 0.36
-  const maxR = Math.min(w, h) * 0.6
+  const cy = h * fy
+  const maxR = Math.min(w, h) * 0.52
   glow(ctx, cx, cy, maxR * 0.9, c, 0.12)
   const N = 480
   const arms = 3
@@ -261,10 +273,10 @@ const spiral: Scene = (ctx, w, h, t, c) => {
 }
 
 // A flame of desire, flickering on its own.
-const flame: Scene = (ctx, w, h, t, c) => {
+const flame: Scene = (ctx, w, h, t, c, _c2, fy) => {
   const u = unit(w, h)
   const cx = w / 2
-  const cy = h * 0.4
+  const cy = h * fy
   const R = Math.min(w, h) * 0.17
   glow(ctx, cx, cy, R * 4.5, c, 0.16)
   for (let L = 0; L < 5; L++) {
@@ -302,10 +314,10 @@ const flame: Scene = (ctx, w, h, t, c) => {
 }
 
 // Two lives in a figure of eight, each flowing into the other.
-const mirror: Scene = (ctx, w, h, t, c, c2) => {
+const mirror: Scene = (ctx, w, h, t, c, c2, fy) => {
   const u = unit(w, h)
   const cx = w / 2
-  const cy = h * 0.36
+  const cy = h * fy
   const A = Math.min(w * 0.42, h * 0.32)
   glow(ctx, cx - A * 0.7, cy, A * 1.1, c, 0.22)
   glow(ctx, cx + A * 0.7, cy, A * 1.1, c2, 0.22)

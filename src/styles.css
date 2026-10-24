@@ -24,6 +24,8 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  /* No swipe-to-go-back or bounce: horizontal swipes belong to the deck. */
+  overscroll-behavior: none;
 }
 
 body {
@@ -155,6 +157,8 @@ cite {
   overflow: hidden;
   overscroll-behavior: none;
   touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
   background:
     radial-gradient(120% 80% at 50% 35%, color-mix(in oklab, var(--hue) 16%, var(--ink-2)) 0%, var(--ink) 70%);
 }
@@ -179,7 +183,10 @@ cite {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(to top, rgba(10, 12, 24, 0.7) 0%, rgba(10, 12, 24, 0.35) 35%, rgba(10, 12, 24, 0) 60%);
+  /* A soft pool of darkness behind the words, which sit a little above centre. */
+  background:
+    radial-gradient(ellipse 120% 50% at 50% 38%, rgba(10, 12, 24, 0.55) 0%, rgba(10, 12, 24, 0.2) 50%, rgba(10, 12, 24, 0) 75%),
+    linear-gradient(to top, rgba(10, 12, 24, 0.45) 0%, rgba(10, 12, 24, 0) 20%);
 }
 
 .stage-top,
@@ -233,20 +240,46 @@ cite {
   color: var(--muted);
 }
 
+/* The words sit a little above centre; the art's focal point is below them
+   (ART_FOCUS in Deck.tsx). The bottom padding is what lifts them. */
 .stage-body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  padding: 1rem 1.5rem 0.5rem;
+  padding: 1rem 1.5rem min(22vh, 10rem);
   overflow-y: auto;
+  touch-action: pan-y;
 }
 
-/* Before starting, the prompt sits low like any screen. Once running, the
-   press button sits where the ripples begin (36% down, see scenes.ts). */
+.kind-reading .stage-body {
+  padding-bottom: 3vh;
+}
+
+/* The busiest screens: let the art step back a little. */
+.kind-name .stage-art,
+.kind-reading .stage-art {
+  opacity: 0.55;
+}
+
+/* margin: auto centres without clipping when a screen is taller than the space. */
+.swipe {
+  width: 100%;
+  margin: auto 0;
+}
+
+.stage input {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Once running, the press button sits where the ripples begin (68% down). */
 .kind-urge .stage-body:has(.urge) {
-  justify-content: flex-start;
-  padding-top: max(1rem, calc(36dvh - 4.75rem - 3.5rem));
+  padding-top: max(1rem, calc(68dvh - 4.75rem - 3.5rem));
+  padding-bottom: 0;
+}
+
+.kind-urge .stage-body:has(.urge) .swipe {
+  margin: 0;
 }
 
 .screen {

@@ -9,10 +9,12 @@ type Props = {
   hue2?: string
   // Draw one frame and stop: thumbnails, and anyone who prefers reduced motion.
   still?: boolean
+  // Height of the focal point, as a fraction (see Scene in scenes.ts).
+  focus?: number
   className?: string
 }
 
-export function ArtCanvas({ variant, hue, hue2, still, className }: Props) {
+export function ArtCanvas({ variant, hue, hue2, still, focus = 0.5, className }: Props) {
   const ref = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export function ArtCanvas({ variant, hue, hue2, still, className }: Props) {
       ctx.globalCompositeOperation = 'source-over'
       ctx.clearRect(0, 0, w, h)
       ctx.globalCompositeOperation = 'lighter'
-      scene(ctx, w, h, t, c1, c2)
+      scene(ctx, w, h, t, c1, c2, focus)
     }
 
     const resize = () => {
@@ -62,7 +64,7 @@ export function ArtCanvas({ variant, hue, hue2, still, className }: Props) {
       cancelAnimationFrame(raf)
       ro.disconnect()
     }
-  }, [variant, hue, hue2, still])
+  }, [variant, hue, hue2, still, focus])
 
   return <canvas ref={ref} className={className} aria-hidden="true" />
 }

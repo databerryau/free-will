@@ -1,4 +1,13 @@
-import { useEffect, useId, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type CSSProperties,
+  type PointerEvent,
+  type TouchEvent,
+  type WheelEvent,
+} from 'react'
 import { ArtCanvas } from '../art/ArtCanvas'
 import { OBJECTIONS } from '../content/objections'
 import { resolve, type AllAnswers, type Answers, type ArtVariant, type ObjectionId, type ReadingItem, type Screen } from '../content/types'
@@ -26,6 +35,9 @@ type Props = {
 
 const INTERACTIVE = 'button, a, input, label, textarea, .sheet'
 
+// The art's focal point sits below the words.
+const ART_FOCUS = 0.68
+
 // A full-screen deck of short screens. Tap, swipe or use the arrow keys to move on.
 export function Deck(props: Props) {
   const { screens, expId, art, hue, hue2, claim, eyebrow, finishLabel, onFinish, onBack, exitHref, startAtEnd, onComplete } =
@@ -37,7 +49,9 @@ export function Deck(props: Props) {
   const [index, setIndex] = useState(() => (startAtEnd ? last : 0))
   const [dir, setDir] = useState<'next' | 'back'>('next')
   const [sheet, setSheet] = useState<ObjectionId | null>(null)
-  const start = useRef<{ x: number; y: number } | null>(null)
+  const drag = useRef<{ x: number; y: number; horizontal: boolean } | null>(null)
+  const swipe = useRef<HTMLDivElement>(null)
+  const wheel = useRef({ total: 0, last: 0, quietUntil: 0 })
 
   const i = Math.min(index, last)
   const screen = visible[i]
@@ -74,6 +88,7 @@ export function Deck(props: Props) {
     (screen.kind === 'think' && !screen.seconds) ||
     ((screen.kind === 'input' || screen.kind === 'choice') && answered)
   const tapAdvances = screen.kind === 'say' || (screen.kind === 'think' && !screen.seconds)
+  const canBack = i > 0 || Boolean(onBack)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -93,20 +108,96 @@ export function Deck(props: Props) {
     return () => window.removeEventListener('keydown', onKey)
   })
 
-  const onPointerDown = (e: PointerEvent) => {
-    start.current = sheet || (e.target as Element).closest(INTERACTIVE) ? null : { x: e.clientX, y: e.clientY }
+  // The words follow the finger, so a swipe visibly works before it lands.
+  const follow = (dx: number, settle = false) => {
+    const el = swipe.current
+    if (!el) return
+    el.style.transition = settle ? 'transform 0.25s ease, opacity 0.25s ease' : 'none'
+    el.style.transform = dx ? `translateX(${dx}px)` : ''
+    el.style.opacity = dx ? String(Math.max(0.35, 1 - Math.abs(dx) / 320)) : ''
+  }
+
+  // Gestures. Touch uses touch events: phone browsers cancel pointer events
+  // part-way through a swipe when they think they might scroll. Mouse and pen
+  // use pointer events.
+  const dragStart = (x: number, y: number, target: EventTarget) => {
+    drag.current = sheet || (target as Element).closest(INTERACTIVE) ? null : { x, y, horizontal: false }
+    return drag.current !== null
+  }
+  const dragMove = (x: number, y: number) => {
+    const d = drag.current
+    if (!d) return
+    const dx = x - d.x
+    if (!d.horizontal && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(y - d.y)) d.horizontal = true
+    if (d.horizontal) follow(dx * ((dx < 0 ? canAdvance : canBack) ? 0.6 : 0.15))
+  }
+  // Returns true when the gesture moved the deck.
+  const dragEnd = (x: number, y: number) => {
+    const d = drag.current
+    drag.current = null
+    if (!d) return false
+    const dx = x - d.x
+    const dy = y - d.y
+    if (d.horizontal && Math.abs(dx) > 50 && (dx < 0 ? canAdvance : canBack)) {
+      follow(0)
+      if (dx < 0) next()
+      else back()
+      return true
+    }
+    follow(0, true)
+    if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && tapAdvances) {
+      next()
+      return true
+    }
+    return false
+  }
+  const dragCancel = () => {
+    drag.current = null
+    follow(0, true)
+  }
+
+  const onTouchStart = (e: TouchEvent) => {
+    if (e.touches.length !== 1) return dragCancel()
+    dragStart(e.touches[0].clientX, e.touches[0].clientY, e.target)
+  }
+  const onTouchMove = (e: TouchEvent) => dragMove(e.touches[0].clientX, e.touches[0].clientY)
+  const onTouchEnd = (e: TouchEvent) => {
+    // Stop the browser's follow-up click landing on the next screen's buttons.
+    if (dragEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY)) e.preventDefault()
+  }
+
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === 'touch' || e.button !== 0) return
+    if (dragStart(e.clientX, e.clientY, e.target)) e.currentTarget.setPointerCapture?.(e.pointerId)
+  }
+  const onPointerMove = (e: PointerEvent) => {
+    if (e.pointerType !== 'touch') dragMove(e.clientX, e.clientY)
   }
   const onPointerUp = (e: PointerEvent) => {
-    const s = start.current
-    start.current = null
-    if (!s) return
-    const dx = e.clientX - s.x
-    const dy = e.clientY - s.y
-    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-      if (dx < 0) {
-        if (canAdvance) next()
-      } else back()
-    } else if (Math.abs(dx) < 10 && Math.abs(dy) < 10 && tapAdvances) next()
+    if (e.pointerType !== 'touch') dragEnd(e.clientX, e.clientY)
+  }
+
+  // Trackpad swipes arrive as horizontal wheel events. One gesture moves one
+  // screen: momentum events are ignored until the trackpad goes quiet.
+  const onWheel = (e: WheelEvent) => {
+    if (sheet || Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return
+    const w = wheel.current
+    const now = performance.now()
+    if (now < w.quietUntil) {
+      w.quietUntil = now + 250
+      return
+    }
+    if (now - w.last > 300) w.total = 0
+    w.last = now
+    w.total += e.deltaX
+    if (Math.abs(w.total) < 60) return
+    const forward = w.total > 0
+    w.total = 0
+    w.quietUntil = now + 250
+    if (forward ? canAdvance : canBack) {
+      if (forward) next()
+      else back()
+    }
   }
 
   const thinking = screen.kind === 'think'
@@ -116,10 +207,17 @@ export function Deck(props: Props) {
       className={`stage kind-${screen.kind}`}
       style={{ '--hue': hue } as CSSProperties}
       onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
+      onPointerCancel={(e) => e.pointerType !== 'touch' && dragCancel()}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      onTouchCancel={dragCancel}
+      onWheel={onWheel}
     >
-      <ArtCanvas variant={art} hue={hue} hue2={hue2} className={`stage-art${thinking ? ' dim' : ''}`} />
-      {thinking && <ArtCanvas variant="think" hue={hue} className="stage-art think-art" />}
+      <ArtCanvas variant={art} hue={hue} hue2={hue2} focus={ART_FOCUS} className={`stage-art${thinking ? ' dim' : ''}`} />
+      {thinking && <ArtCanvas variant="think" hue={hue} focus={ART_FOCUS} className="stage-art think-art" />}
       <div className="stage-scrim" />
 
       <header className="stage-top">
@@ -139,21 +237,23 @@ export function Deck(props: Props) {
       </header>
 
       <div className="stage-body" aria-live="polite">
-        <div key={`${i}-${screen.kind}`} className={`screen enter-${dir}`}>
-          <ScreenView
-            screen={screen}
-            a={a}
-            all={answers}
-            claim={claim}
-            onNext={next}
-            onAnswer={answer}
-            onObjection={setSheet}
-          />
+        <div ref={swipe} className="swipe">
+          <div key={`${i}-${screen.kind}`} className={`screen enter-${dir}`}>
+            <ScreenView
+              screen={screen}
+              a={a}
+              all={answers}
+              claim={claim}
+              onNext={next}
+              onAnswer={answer}
+              onObjection={setSheet}
+            />
+          </div>
         </div>
       </div>
 
       <footer className="stage-bottom">
-        {i > 0 || onBack ? (
+        {canBack ? (
           <button className="round" onClick={back} aria-label="Back">
             <Arrow back />
           </button>

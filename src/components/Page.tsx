@@ -23,7 +23,7 @@ export function Page({ home, title, lede, art = 'field', hue = HUES.gold, childr
   return (
     <div className="page" style={{ '--hue': hue } as CSSProperties}>
       <header className="hero">
-        <ArtCanvas variant={art} hue={hue} className="hero-art" />
+        <ArtCanvas variant={art} hue={hue} focus={0.4} className="hero-art" />
         <div className="hero-scrim" />
         <div className="hero-text">
           {title !== APP_TITLE && (
