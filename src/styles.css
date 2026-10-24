@@ -10,7 +10,7 @@
   --glass: rgba(255, 255, 255, 0.06);
   --hue: #f4b860;
 
-  --display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --display: 'Newsreader', Georgia, 'Times New Roman', serif;
   --ui: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   color-scheme: dark;
@@ -341,11 +341,9 @@ cite {
   margin: 0 0 1.25rem;
   font-family: var(--display);
   font-size: clamp(1.7rem, 6.4vw, 2.6rem);
-  font-weight: 350;
-  line-height: 1.2;
-  letter-spacing: -0.012em;
+  font-weight: 400;
+  line-height: 1.28;
   text-wrap: pretty;
-  font-variation-settings: 'opsz' 96;
 }
 
 .say.long {
@@ -382,7 +380,7 @@ cite {
   font-family: var(--display);
   font-size: 1.6rem;
   font-style: italic;
-  font-weight: 350;
+  font-weight: 400;
 }
 
 .answer-row input::placeholder {
@@ -483,9 +481,8 @@ cite {
   margin: 0 0 0.875rem;
   font-family: var(--display);
   font-size: clamp(2rem, 7.5vw, 3rem);
-  font-weight: 450;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
+  font-weight: 500;
+  line-height: 1.12;
   color: var(--hue);
   text-wrap: balance;
 }
@@ -494,8 +491,8 @@ cite {
   margin: 0 0 1.5rem;
   font-family: var(--display);
   font-size: clamp(1.2rem, 4.4vw, 1.5rem);
-  font-weight: 350;
-  line-height: 1.35;
+  font-weight: 400;
+  line-height: 1.4;
   color: var(--soft);
   text-wrap: pretty;
 }
@@ -605,7 +602,7 @@ cite {
   font-size: 1.6rem;
   font-style: italic;
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--hue);
 }
 
@@ -613,8 +610,8 @@ cite {
   margin: 0 0 1rem;
   font-family: var(--display);
   font-size: 1.2rem;
-  font-weight: 350;
-  line-height: 1.45;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 .sheet .pill {
@@ -671,10 +668,9 @@ cite {
   margin: 0 0 0.75rem;
   font-family: var(--display);
   font-size: clamp(2.6rem, 11vw, 4.5rem);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.03em;
-  font-variation-settings: 'opsz' 144;
+  font-weight: 450;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
 }
 
 .lede {
@@ -682,7 +678,7 @@ cite {
   margin: 0;
   font-family: var(--display);
   font-size: 1.25rem;
-  font-weight: 350;
+  font-weight: 400;
   line-height: 1.4;
   color: var(--soft);
 }
@@ -775,8 +771,8 @@ cite {
 .card-title {
   font-family: var(--display);
   font-size: 1.3rem;
-  font-weight: 450;
-  line-height: 1.15;
+  font-weight: 500;
+  line-height: 1.2;
 }
 
 .card-number {

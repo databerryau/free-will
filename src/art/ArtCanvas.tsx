@@ -26,17 +26,19 @@ export function ArtCanvas({ variant, hue, hue2, still, focus = 0.5, className }:
     const c2 = hexToRgb(hue2 ?? hue)
     const isStill = still || prefersReducedMotion()
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    const start = performance.now()
     let w = 0
     let h = 0
     let raf = 0
 
-    const draw = (t: number) => {
+    const draw = (now: number) => {
       ctx.globalCompositeOperation = 'source-over'
       ctx.clearRect(0, 0, w, h)
       ctx.globalCompositeOperation = 'lighter'
-      scene(ctx, w, h, t, c1, c2, focus)
+      scene(ctx, w, h, isStill ? STILL_T : STILL_T + (now - start) / 1000, c1, c2, focus)
     }
 
+    // Draws straight away, so the art never waits on the first animation frame.
     const resize = () => {
       const r = canvas.getBoundingClientRect()
       w = r.width
@@ -44,7 +46,7 @@ export function ArtCanvas({ variant, hue, hue2, still, focus = 0.5, className }:
       canvas.width = Math.max(1, Math.round(w * dpr))
       canvas.height = Math.max(1, Math.round(h * dpr))
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      if (isStill) draw(STILL_T)
+      draw(performance.now())
     }
 
     const ro = new ResizeObserver(resize)
@@ -52,9 +54,8 @@ export function ArtCanvas({ variant, hue, hue2, still, focus = 0.5, className }:
     resize()
 
     if (!isStill) {
-      const start = performance.now()
       const loop = (now: number) => {
-        draw(STILL_T + (now - start) / 1000)
+        draw(now)
         raf = requestAnimationFrame(loop)
       }
       raf = requestAnimationFrame(loop)

@@ -225,8 +225,9 @@ Redesign after the first review (2026-10-24):
 - **A few lines per screen.** Every experiment is now a deck of short screens (about 25 words
   at most) that you tap, swipe or arrow-key through, with a progress bar along the top.
   This replaces the single scrolling page from the first build.
-- **Night visual design** replaces quiet editorial: deep ink background, Fraunces display
-  type and a glowing hue for each experiment. There is one dark theme; the light/dark
+- **Night visual design** replaces quiet editorial: deep ink background, Newsreader display
+  type and a glowing hue for each experiment. Newsreader replaced Fraunces, whose thin
+  display cut and tight spacing made letters look clipped and hard to read. There is one dark theme; the light/dark
   switch has been dropped.
 - **Generative artwork drawn in code** (`src/art/`), not Gemini images: city lights, rising
   thoughts, ripples, roots, a backward-turning spiral, a flame and a figure-eight. It
