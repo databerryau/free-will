@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { ARG_STEPS, EXPERIMENT_BY_ID } from '../content/experiments'
 import { Deck } from '../components/Deck'
 import { GroupedList } from '../components/ExperimentList'
@@ -8,8 +9,14 @@ import { useStore } from '../lib/store'
 const HOME = '#/library'
 
 export function Library({ id }: { id?: string }) {
-  const { markDone } = useStore()
+  const { markDone, forget } = useStore()
   const exp = id ? EXPERIMENT_BY_ID[id] : undefined
+
+  // Each experiment is its own playthrough: leaving it, finished or not,
+  // wipes its answers so the next person doesn't see them.
+  useEffect(() => {
+    if (exp) return () => forget(exp.id)
+  }, [exp, forget])
 
   if (exp) {
     return (

@@ -43,7 +43,10 @@ Pushing to `main` builds and deploys to GitHub Pages via `.github/workflows/depl
 
 Copy rules: Sam Harris's voice, a few lines per screen. See SPEC.md §9.
 
-Typed answers are kept only in the browser (localStorage) and can be cleared from any page.
+Nothing is kept on the device. Answers live in tab-only storage (sessionStorage), so closing the
+tab erases them, and each playthrough wipes them when it ends: the walkthrough and path after
+"What you noticed", and a library experiment as soon as you leave it. So several testers can
+share one phone.
 
 ## OneDrive note
 

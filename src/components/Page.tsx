@@ -1,6 +1,6 @@
 import { useState, type CSSProperties, type ReactNode } from 'react'
 import { ArtCanvas } from '../art/ArtCanvas'
-import { APP_TITLE, CREDIT } from '../content/copy'
+import { APP_TITLE, CREDIT, PRIVACY } from '../content/copy'
 import { HUES } from '../content/experiments'
 import type { ArtVariant } from '../content/types'
 import { useStore } from '../lib/store'
@@ -37,6 +37,7 @@ export function Page({ home, title, lede, art = 'field', hue = HUES.gold, childr
       </header>
       <main className="page-main">{children}</main>
       <footer className="site-footer">
+        <p>{PRIVACY}</p>
         <p>{CREDIT}</p>
         <button
           className="text-button"

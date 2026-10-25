@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { BRIDGES, CLOSE, NOTICED } from '../content/copy'
 import { ARG_STEPS, EXPERIMENT_BY_ID, HUES, PATH } from '../content/experiments'
 import { Deck } from '../components/Deck'
@@ -9,7 +10,19 @@ import { useStore } from '../lib/store'
 const HOME = '#/path'
 
 export function Path({ sub }: { sub?: string }) {
-  const { done, markDone } = useStore()
+  const { done, markDone, forget, clearAll } = useStore()
+  const exp = sub ? EXPERIMENT_BY_ID[sub] : undefined
+  const doneRef = useRef(done)
+  doneRef.current = done
+
+  // Leaving an experiment wipes its answers, except finished path experiments:
+  // "What you noticed" needs those, and wipes everything once it has used them.
+  useEffect(() => {
+    if (!exp) return
+    return () => {
+      if (!(PATH.includes(exp.id) && doneRef.current.includes(exp.id))) forget(exp.id)
+    }
+  }, [exp, forget])
 
   if (sub === 'noticed') {
     return (
@@ -21,7 +34,10 @@ export function Path({ sub }: { sub?: string }) {
         eyebrow="What you noticed"
         exitHref={HOME}
         finishLabel="Continue"
-        onFinish={() => go(`${HOME}/close`)}
+        onFinish={() => {
+          clearAll()
+          go(`${HOME}/close`)
+        }}
         onBack={() => go(`${HOME}/${PATH[PATH.length - 1]}`)}
       />
     )
@@ -42,7 +58,6 @@ export function Path({ sub }: { sub?: string }) {
     )
   }
 
-  const exp = sub ? EXPERIMENT_BY_ID[sub] : undefined
   if (exp) {
     const i = PATH.indexOf(exp.id)
     const onPath = i >= 0

@@ -9,14 +9,26 @@ const to = (n: number) => `${HOME}/${n}`
 
 // Chapters: 0 intro · 1–4 experiments · 5 what you noticed · 6 close.
 // Backing out of a chapter lands on the previous chapter's last screen.
+// Answers are wiped on Begin and once "What you noticed" has used them.
 export function Walkthrough({ chapter, atEnd }: { chapter: number; atEnd: boolean }) {
-  const { markDone } = useStore()
+  const { markDone, clearAll } = useStore()
   const n = Number.isInteger(chapter) ? Math.min(Math.max(chapter, 0), PATH.length + 2) : 0
   const backTo = () => go(`${to(n - 1)}/end`)
 
   if (n === 0) {
     return (
-      <Deck key="intro" screens={INTRO} art="dawn" hue={HUES.gold} finishLabel="Begin" onFinish={() => go(to(1))} startAtEnd={atEnd} />
+      <Deck
+        key="intro"
+        screens={INTRO}
+        art="dawn"
+        hue={HUES.gold}
+        finishLabel="Begin"
+        onFinish={() => {
+          clearAll()
+          go(to(1))
+        }}
+        startAtEnd={atEnd}
+      />
     )
   }
 
@@ -50,7 +62,10 @@ export function Walkthrough({ chapter, atEnd }: { chapter: number; atEnd: boolea
         hue={HUES.gold}
         eyebrow="What you noticed"
         finishLabel="Continue"
-        onFinish={() => go(to(n + 1))}
+        onFinish={() => {
+          clearAll()
+          go(to(n + 1))
+        }}
         onBack={backTo}
         startAtEnd={atEnd}
       />

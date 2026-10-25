@@ -236,5 +236,8 @@ Redesign after the first review (2026-10-24):
 - **Thinking animation:** a breathing orb that gives off thoughts. It plays whenever the
   user is asked to think, with a slowly filling line when the step is timed.
 - **"But…" replies open in a bottom sheet**, so the main screens stay short.
+- **Nothing is kept between people (2026-10-25).** Answers moved from localStorage to
+  tab-only sessionStorage, and each playthrough wipes them when it ends. That way several
+  testers can share one device.
 - **Rewind's "other answer" aside is gone.** The closing screen and the "could have done
   otherwise" reply now cover both answers.

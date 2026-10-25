@@ -6,6 +6,8 @@ export const APP_TITLE = 'Who chose that?'
 
 export const CREDIT = 'Based on Free Will by Sam Harris (2012). Not affiliated with or endorsed by him.'
 
+export const PRIVACY = 'Nothing you type is kept. Answers are wiped when you finish, or when you close this tab.'
+
 export const FORMATS = [
   {
     route: '#/walkthrough',
@@ -34,7 +36,7 @@ export const INTRO: Screen[] = [
     text: 'The feeling is so compelling that doubting it can seem absurd. But it doesn’t survive close inspection.',
   },
   { kind: 'say', text: 'You don’t need to take anyone’s word for this. You can look for yourself.' },
-  { kind: 'say', text: 'Four short experiments. About ten minutes. Your answers never leave this device.' },
+  { kind: 'say', text: 'Four short experiments. About ten minutes. Nothing you type is kept.' },
 ]
 
 const line = (all: AllAnswers) => ({
