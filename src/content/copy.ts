@@ -13,19 +13,16 @@ export const FORMATS = [
     route: '#/walkthrough',
     title: 'Guided walkthrough',
     description: 'Four experiments in a fixed order, ending with what you noticed.',
-    tests: 'Does a fixed, linear sequence persuade a sceptic better than free exploration?',
   },
   {
     route: '#/library',
     title: 'Experiment library',
     description: 'All seven experiments. Start anywhere.',
-    tests: 'Do standalone, self-chosen experiments engage people and still add up to understanding?',
   },
   {
     route: '#/path',
     title: 'Library with a path',
     description: 'The same seven, with a suggested route through four of them.',
-    tests: 'Does a suggested route give the walkthrough’s coherence with the library’s freedom?',
   },
 ]
 

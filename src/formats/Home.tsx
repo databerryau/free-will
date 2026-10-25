@@ -12,7 +12,6 @@ export function Home() {
               <span className="card-text">
                 <span className="card-title">{f.title}</span>
                 <span className="card-hook">{f.description}</span>
-                <span className="card-meta">Tests: {f.tests}</span>
               </span>
             </a>
           </li>
