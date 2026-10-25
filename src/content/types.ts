@@ -32,7 +32,22 @@ export type Screen = { when?: (a: Answers, all: AllAnswers) => boolean } & (
   | { kind: 'urge'; key: string; seconds: number; text: Text }
   | { kind: 'name'; text: Text; claim?: string; objections?: ObjectionId[] }
   | { kind: 'reading'; heading: string; items: ReadingItem[]; note?: string }
+  // A question answered by going somewhere: the verdict, and the end of a counter-argument.
+  | { kind: 'links'; text: Text; links: { label: string; href: string }[] }
 )
+
+// An objection on the "not convinced" page, answered over several short screens.
+export type Argument = {
+  id: string
+  label: string
+  hook: string
+  art: ArtVariant
+  hue: string
+  hue2?: string
+  screens: Screen[]
+  // The question its last screen leaves the reader with.
+  closing: string
+}
 
 export type Experiment = {
   id: string

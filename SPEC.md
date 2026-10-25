@@ -239,5 +239,12 @@ Redesign after the first review (2026-10-24):
 - **Nothing is kept between people (2026-10-25).** Answers moved from localStorage to
   tab-only sessionStorage, and each playthrough wipes them when it ends. That way several
   testers can share one device.
+- **A verdict at the end (2026-10-25):** "Has this convinced you that free will is an
+  illusion?" Yes leads to an affirming close, which replaces the old closing screens. No leads
+  to 8 common objections, each answered over several short screens that turn it back on the
+  reader's experience. Each reply ends with "Back to the arguments" or "Actually, I'm
+  convinced". There's also a "Still not convinced" exit with the best opposing reading. The
+  verdict appears after "What you noticed" in the walkthrough and path, and from a
+  "Convinced yet?" link at the bottom of the library.
 - **Rewind's "other answer" aside is gone.** The closing screen and the "could have done
   otherwise" reply now cover both answers.

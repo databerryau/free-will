@@ -1,5 +1,4 @@
 import { clean } from './experiments'
-import { READING } from './objections'
 import type { AllAnswers, Screen } from './types'
 
 export const APP_TITLE = 'Who chose that?'
@@ -96,23 +95,6 @@ export const NOTICED: Screen[] = [
     text: 'Look for the self that stands apart from all this, making the choices. It isn’t there.',
     objections: ['why-bother', 'responsible'],
   },
-]
-
-export const CLOSE: Screen[] = [
-  { kind: 'say', text: 'None of this means your choices don’t matter. They still change the world.' },
-  {
-    kind: 'say',
-    text: 'What falls away is the sense of being a separate self, pulling levers from somewhere behind your eyes.',
-  },
-  {
-    kind: 'say',
-    text: 'Seeing this clearly can be a relief. It becomes harder to hate other people, or yourself, for being who you are.',
-  },
-  {
-    kind: 'say',
-    text: 'In place of judgement, you are left with curiosity about why people do what they do. Including you.',
-  },
-  { kind: 'reading', heading: 'To go further', items: READING, note: CREDIT },
 ]
 
 // Final screen of each experiment on the suggested path.

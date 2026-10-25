@@ -5,10 +5,11 @@ import { GroupedList } from '../components/ExperimentList'
 import { Page } from '../components/Page'
 import { go } from '../lib/router'
 import { useStore } from '../lib/store'
+import { VERDICT_STEPS, Verdict } from './Verdict'
 
 const HOME = '#/library'
 
-export function Library({ id }: { id?: string }) {
+export function Library({ id, flag }: { id?: string; flag?: string }) {
   const { markDone, forget } = useStore()
   const exp = id ? EXPERIMENT_BY_ID[id] : undefined
 
@@ -17,6 +18,10 @@ export function Library({ id }: { id?: string }) {
   useEffect(() => {
     if (exp) return () => forget(exp.id)
   }, [exp, forget])
+
+  if (id && VERDICT_STEPS.includes(id)) {
+    return <Verdict base={HOME} step={id} argId={flag} backHref={HOME} />
+  }
 
   if (exp) {
     return (
@@ -41,6 +46,12 @@ export function Library({ id }: { id?: string }) {
   return (
     <Page home={HOME} art="think" title="Seven experiments" lede="Short experiments on your own mind. Each takes a minute or two. Start anywhere.">
       <GroupedList base={HOME} />
+      <section className="convinced-yet">
+        <h2 className="group-heading">Convinced yet?</h2>
+        <a className="pill" href={`${HOME}/verdict`}>
+          Answer one last question
+        </a>
+      </section>
     </Page>
   )
 }

@@ -24,8 +24,9 @@ type Props = {
   // Default heading for "What this shows" screens.
   claim?: string
   eyebrow?: string
-  finishLabel: string
-  onFinish: () => void
+  // Not needed when the last screen is a `links` screen, which has its own way out.
+  finishLabel?: string
+  onFinish?: () => void
   // Back from the first screen.
   onBack?: () => void
   exitHref?: string
@@ -66,7 +67,7 @@ export function Deck(props: Props) {
     if (i < last) {
       setDir('next')
       setIndex(i + 1)
-    } else onFinish()
+    } else onFinish?.()
   }
   const back = () => {
     if (i > 0) {
@@ -261,11 +262,11 @@ export function Deck(props: Props) {
           <span />
         )}
         {i === 0 && tapAdvances && <span className="hint">Tap or swipe</span>}
-        {isLast ? (
+        {isLast && finishLabel && screen.kind !== 'links' ? (
           <button className="pill" onClick={onFinish}>
             {finishLabel}
           </button>
-        ) : canAdvance && !thinking ? (
+        ) : !isLast && canAdvance && !thinking ? (
           <button className="round next" onClick={next} aria-label="Next">
             <Arrow />
           </button>
@@ -344,6 +345,19 @@ function ScreenView({ screen, a, all, claim, onNext, onAnswer, onObjection }: Vi
               ))}
             </div>
           )}
+        </div>
+      )
+    case 'links':
+      return (
+        <div className="ask">
+          <Say text={r(screen.text)} />
+          <div className="options">
+            {screen.links.map((l) => (
+              <a key={l.href} className="option" href={l.href}>
+                {l.label}
+              </a>
+            ))}
+          </div>
         </div>
       )
     case 'reading':

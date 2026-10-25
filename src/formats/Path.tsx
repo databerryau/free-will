@@ -1,15 +1,16 @@
 import { useEffect, useRef } from 'react'
-import { BRIDGES, CLOSE, NOTICED } from '../content/copy'
+import { BRIDGES, NOTICED } from '../content/copy'
 import { ARG_STEPS, EXPERIMENT_BY_ID, HUES, PATH } from '../content/experiments'
 import { Deck } from '../components/Deck'
 import { ExperimentCard, GroupedList } from '../components/ExperimentList'
 import { Page } from '../components/Page'
 import { go } from '../lib/router'
 import { useStore } from '../lib/store'
+import { VERDICT_STEPS, Verdict } from './Verdict'
 
 const HOME = '#/path'
 
-export function Path({ sub }: { sub?: string }) {
+export function Path({ sub, flag }: { sub?: string; flag?: string }) {
   const { done, markDone, forget, clearAll } = useStore()
   const exp = sub ? EXPERIMENT_BY_ID[sub] : undefined
   const doneRef = useRef(done)
@@ -24,6 +25,10 @@ export function Path({ sub }: { sub?: string }) {
     }
   }, [exp, forget])
 
+  if (sub && VERDICT_STEPS.includes(sub)) {
+    return <Verdict base={HOME} step={sub} argId={flag} backHref={`${HOME}/noticed`} />
+  }
+
   if (sub === 'noticed') {
     return (
       <Deck
@@ -36,24 +41,9 @@ export function Path({ sub }: { sub?: string }) {
         finishLabel="Continue"
         onFinish={() => {
           clearAll()
-          go(`${HOME}/close`)
+          go(`${HOME}/verdict`)
         }}
         onBack={() => go(`${HOME}/${PATH[PATH.length - 1]}`)}
-      />
-    )
-  }
-
-  if (sub === 'close') {
-    return (
-      <Deck
-        key="close"
-        screens={CLOSE}
-        art="dawn"
-        hue={HUES.gold}
-        exitHref={HOME}
-        finishLabel="Back to experiments"
-        onFinish={() => go(HOME)}
-        onBack={() => go(`${HOME}/noticed`)}
       />
     )
   }

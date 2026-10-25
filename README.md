@@ -36,7 +36,9 @@ Pushing to `main` builds and deploys to GitHub Pages via `.github/workflows/depl
 
 - `src/content/experiments.ts`: the seven experiments, screen by screen
 - `src/content/objections.ts`: the "But…" replies and the reading list
-- `src/content/copy.ts`: intro, bridges, "What you noticed", closing screens
+- `src/content/copy.ts`: intro, bridges, "What you noticed"
+- `src/content/verdict.ts`: "Has this convinced you?", the yes ending, and the 8 objections
+  with their counter-arguments (`src/formats/Verdict.tsx` shows them in every format)
 - `src/components/Deck.tsx`: full-screen deck of short screens (tap, swipe or arrow keys)
 - `src/art/`: the generative artwork and the thinking animation (canvas)
 - `src/formats/`: the three formats and the home page

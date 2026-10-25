@@ -16,11 +16,11 @@ export function App() {
 
   switch (section) {
     case 'walkthrough':
-      return <Walkthrough chapter={Number(sub ?? 0)} atEnd={flag === 'end'} />
+      return <Walkthrough sub={sub} flag={flag} />
     case 'library':
-      return <Library id={sub} />
+      return <Library id={sub} flag={flag} />
     case 'path':
-      return <Path sub={sub} />
+      return <Path sub={sub} flag={flag} />
     default:
       return <Home />
   }
