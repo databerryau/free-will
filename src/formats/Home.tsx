@@ -1,10 +1,10 @@
 import { APP_TITLE, FORMATS } from '../content/copy'
 import { Page } from '../components/Page'
 
-// Owner's index. Testers are sent a format's own link instead.
+// Index of the three formats. Each format's own link also works on its own.
 export function Home() {
   return (
-    <Page home="#/" title={APP_TITLE} lede="Three ways into the same seven experiments. Send each tester a single link." art="dawn">
+    <Page home="#/" title={APP_TITLE} lede="Three ways into the same seven experiments." art="dawn">
       <ul className="cards">
         {FORMATS.map((f) => (
           <li key={f.route}>
