@@ -58,7 +58,7 @@ Seven experiments, written once and reused by every format. Each has: title, one
 hook, est. time, the exercise, a **reflection** (personalised from typed input where
 possible), a **"name it"** line tying it to step A/B/C, and optional **"But…"** objections.
 
-Typed answers are stored **only in the browser** (localStorage) and can be cleared.
+Typed answers are stored **only in the browser** (now tab-only sessionStorage, see §9) and can be cleared.
 
 1. **Pick a city** (A, ~1 min). Type any city. Reflection: show 4–5 well-known cities
    the user didn't pick ("Did Lisbon occur to you? Nairobi? Osaka?"). You didn't choose
@@ -161,7 +161,7 @@ library give the walkthrough's coherence with the library's freedom?
 
 - **Phone-first.** Single column, max ~38rem text width on desktop, 16px gutters, tap
   targets ≥44px, no horizontal scroll. Must also be comfortable on desktop.
-- **Quiet editorial.** Serif body text (e.g. a Google Font like *Source Serif* or
+- **Quiet editorial** (replaced by the night design with one dark theme, see §9). Serif body text (e.g. a Google Font like *Source Serif* or
   *Literata*), warm off-white paper tone, dark warm-grey text, one muted accent. Generous
   white space. Minimal motion: gentle fades only. Respect `prefers-reduced-motion`.
   Dark mode via `prefers-color-scheme` (warm, not black).
@@ -174,7 +174,7 @@ library give the walkthrough's coherence with the library's freedom?
 - **Content as data:** experiments, reflections, objections and bridges live in one
   module (e.g. `src/content/experiments.ts`), consumed by all three formats.
 - **Routing:** hash routing (works on GitHub Pages with no server config).
-- **State:** localStorage for typed answers and visited marks, behind try/catch; the app
+- **State:** sessionStorage (was localStorage, see §9) for typed answers and visited marks, behind try/catch; the app
   must work if storage is unavailable. "Clear my answers" on every format.
 - **Run locally:** `npm install` once, then `npm run dev`.
 - **Code location:** this OneDrive folder, under git, pushed to the owner's GitHub.
@@ -189,11 +189,16 @@ library give the walkthrough's coherence with the library's freedom?
 - All three formats run locally with `npm run dev` and are live on GitHub Pages.
 - README has one line per format on what it is testing (from §5), plus run/deploy steps.
 - All 7 experiments and the "But…" replies are written in full: real content, no placeholders.
-- Checked on a phone-sized viewport and desktop, light and dark.
+- Checked on a phone-sized viewport and desktop, in the one dark theme (the light theme
+  was dropped in the redesign, §9).
 - A short recommendation of which format works best and why, judged on: does it land
   for a skeptic without explanation, does it build understanding of all three steps,
   does it avoid lecturing, and does it have room to grow into a public app. Then stop
   for the owner's pick, ideally after their friend tests.
+  **Written 2026-11-13:** [docs/format-recommendation.md](docs/format-recommendation.md)
+  recommends the guided walkthrough, with the library moved behind its ending. Awaiting the
+  owner's pick. A sceptic's read of the arguments is in
+  [docs/sceptic-critique.md](docs/sceptic-critique.md).
 
 ## 9. Decisions log
 
@@ -248,3 +253,12 @@ Redesign after the first review (2026-10-24):
   "Convinced yet?" link at the bottom of the library.
 - **Rewind's "other answer" aside is gone.** The closing screen and the "could have done
   otherwise" reply now cover both answers.
+
+Review (2026-11-13):
+
+- **Format recommendation written** (§8): the walkthrough, with the library after its ending
+  and the path dropped. No app changes yet; the pick is the owner's.
+- **Sceptic's critique** in `docs/sceptic-critique.md`, with proposed copy rewrites waiting
+  for approval. No app copy has changed.
+- **Spec tidied:** §4, §6, §7 and §8 now point to the decisions above where the build moved
+  on (sessionStorage, one dark theme).
